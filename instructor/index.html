@@ -549,8 +549,42 @@ in Terminal (Mac/Linux) or Git Bash (Windows) or Anaconda Prompt
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="ex">pip</span> install numpy pandas matplotlib opencv-python scikit-learn</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="ex">pip</span> install numpy pandas matplotlib opencv-python scikit-learn scikit-image seaborn</span></code></pre>
 </div>
+<blockquote>
+<h2 id="windows-subsystem-for-linux">Windows Subsystem for Linux</h2>
+<p>If you’re using WSL, you will also need to <code>pip install</code>
+the <code>PyQT5</code> package in your virtual environment. {:
+.warning}</p>
+</blockquote>
+<blockquote>
+<h2 id="using-juypter-notebooks">Using Juypter Notebooks</h2>
+<p>Juptyter notebooks are a popular and convenient way of doing
+exploratory data science. If you’d like to use a notebook for the
+course, also <code>pip install</code> the <code>jupyter</code> package
+in your virtual environment.</p>
+<p>Then, you can run Jupyter lab using:</p>
+<div class="codewrapper sourceCode" id="cb4">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="ex">jupyter</span> lab</span></code></pre>
+</div>
+<p>You should see an output like:</p>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>
+To access the server, open this file in a browser:
+    file:///home/smangham/.local/share/jupyter/runtime/jpserver-17093-open.html
+Or copy and paste one of these URLs:
+    http://localhost:8888/lab?token=53f26924ce34afe93f042e7748fcf46975ebbfb21d4dfbbc
+    http://127.0.0.1:8888/lab?token=53f26924ce34afe93f042e7748fcf46975ebbfb21d4dfbbc</code></pre>
+</div>
+<p>Follow the instructions, and you should see a launching page that
+looks something like this: <a href="../fig/jupyter-landing.png">Jupyter
+landing page</a> The “Notebook” option will allow you to create a
+Jupyter Notebook. {: .info}</p>
+</blockquote>
 </div>
 <div class="section level2">
 <h2 id="deactivatingactivating-environment">Deactivating/activating environment<a class="anchor" aria-label="anchor" href="#deactivatingactivating-environment"></a></h2>
@@ -604,7 +638,7 @@ are already pre-installed.</p>
         <p>Materials licensed under <a href="LICENSE.html">CC-BY 4.0</a> by the authors</p>
 
         <p>Template licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">CC-BY 4.0</a> by <a href="https://carpentries.org/" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.18.5" class="external-link">sandpaper (0.18.5)</a>, <a href="https://github.com/carpentries/pegboard/tree/0.7.9" class="external-link">pegboard (0.7.9)</a>, and <a href="https://github.com/carpentries/varnish/tree/1.0.9" class="external-link">varnish (1.0.9)</a></p>
+        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.20.0" class="external-link">sandpaper (0.20.0)</a>, <a href="https://github.com/carpentries/pegboard/tree/0.7.9" class="external-link">pegboard (0.7.9)</a>, and <a href="https://github.com/carpentries/varnish/tree/1.0.9" class="external-link">varnish (1.0.9)</a></p>
 		</div>
 		</footer></div> <!-- / div.container -->
 	<div id="to-top">
@@ -626,8 +660,8 @@ are already pre-installed.</p>
   "url": "https://carpentries-incubator.github.io/machine-learning-novice-sklearn/instructor/index.html",
   "identifier": "https://carpentries-incubator.github.io/machine-learning-novice-sklearn/instructor/index.html",
   "dateCreated": "2019-04-04",
-  "dateModified": "2026-02-24",
-  "datePublished": "2026-02-24"
+  "dateModified": "2026-03-10",
+  "datePublished": "2026-03-10"
 }
 
   </script><script>
