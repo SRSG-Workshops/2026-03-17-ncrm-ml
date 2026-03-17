@@ -357,7 +357,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Supervised methods - Classification</h1>
-        <p>Last updated on 2026-03-16 |
+        <p>Last updated on 2026-03-17 |
 
         <a href="https://github.com/carpentries-incubator/machine-learning-novice-sklearn/edit/main/episodes/03-classification.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -415,7 +415,12 @@ attempt to classify species.</p>
 <p>The above table contains multiple categorical objects such as
 species. If we attempt to include the other categorical fields, island
 and sex, we might hinder classification performance due to the
-complexity of the data.</p>
+complexity of the data. In addition, some variables may ‘effectively’
+classify in a way that is not meaningful. s the penguin species are
+fairly geographically separated, including location might result in the
+classifier mostly just using location to identify the species. This is
+not helpful if we’re trying to identify penguins that are out of
+place.</p>
 <div class="section level3">
 <h3 id="preprocessing-our-data">Preprocessing our data<a class="anchor" aria-label="anchor" href="#preprocessing-our-data"></a></h3>
 <p>Lets load up and pre-process our dataset and specify our
@@ -520,7 +525,7 @@ might identify.</p>
 </h3>
 <pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>fig01 <span class="op">=</span> sns.scatterplot(X_train, x<span class="op">=</span>feature_names[<span class="dv">0</span>], y<span class="op">=</span>feature_names[<span class="dv">1</span>], hue<span class="op">=</span>dataset[<span class="st">'species'</span>])</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>sns.scatterplot(X_train, x<span class="op">=</span>feature_names[<span class="dv">0</span>], y<span class="op">=</span>feature_names[<span class="dv">1</span>], hue<span class="op">=</span>dataset[<span class="st">'species'</span>])</span>
 <span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>plt.show()</span></code></pre>
 </div>
 <figure><img src="fig/e3_penguins_vis.png" alt="Visualising the penguins dataset" class="figure mx-auto d-block"></figure><p>As there are four measurements for each penguin, we need quite a few
@@ -606,6 +611,13 @@ data into “Adelie” and “Gentoo” categories using the criteria
 <code>flipper_length_mm &lt;= 206.5</code>, and the next two questions
 (<code>depth=2</code>) split the “Adelie” and “Gentoo” categories into
 “Adelie &amp; Chinstrap” and “Gentoo &amp; Chinstrap” predictions.</p>
+<p>The colour of each leaf in the tree shows the most likely
+classification, with the intensity of that colour corresponding to how
+likely it is. We can see that the first check, for short flipper length,
+gives a very likely classification of Gentoo. Even though that branch of
+the tree can also classify into Chinstrap or Adele, looking at the
+number of samples for each leaf shows that Gentoo is much more
+likely.</p>
 <!-- We can see from this that there's some very tortuous logic being used to tease out every single observation in the training set. For example, the single purple Gentoo node at the bottom of the tree. If we truncated that branch to the second level (Chinstrap), we'd have a little inaccuracy, a total of 9 non-Chinstraps in with 48 Chinstraps, but a less convoluted model.
 
 The tortuous logic, such as the bottom purple Gentoo node, is a clear indication that this model has been over-fitted. It has developed a very complex delineation of the classification space in order to match every single observation, which will likely lead to poor results for new observations.
@@ -630,10 +642,32 @@ training a new model on only 2 features:</p>
 <span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a></span>
 <span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>d <span class="op">=</span> DecisionBoundaryDisplay.from_estimator(clf, X_train[[f1, f2]])</span>
 <span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a></span>
-<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>sns.scatterplot(X_train, x<span class="op">=</span>f1, y<span class="op">=</span>f2, hue<span class="op">=</span>y_train, palette<span class="op">=</span><span class="st">"husl"</span>)</span>
-<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a>plt.show()</span></code></pre>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>sns.scatterplot(</span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a>  data<span class="op">=</span>penguins.loc[X_train.index].sort_values(<span class="st">"species"</span>), </span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a>  x<span class="op">=</span>f1, y<span class="op">=</span>f2, hue<span class="op">=</span><span class="st">"species"</span></span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a>  )</span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a>plt.show()</span></code></pre>
 </div>
-<figure><img src="fig/e3_dt_space_2.png" alt="Classification space for our decision tree" class="figure mx-auto d-block"></figure><div id="exercise-tuning-the-max_depth-hyperparameter" class="callout challenge">
+<figure><img src="fig/e3_dt_space_2.png" alt="Classification space for our decision tree" class="figure mx-auto d-block"></figure><div id="consistency-randomness" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="consistency-randomness" class="callout-inner">
+<h3 class="callout-title">Consistency &amp; Randomness</h3>
+<div class="callout-content">
+<p>The colours of the estimator are based on the category names, in
+alphabetical order. However, the colours of the <em>scatter plot</em>
+are based on the category names, in the order they are encountered. As
+the training data is selected randomly, it is likely that the samples
+will not be in alphabetical order by species!</p>
+<p>In order to match up the colouring between the estimator and scatter
+points, to make the plot easier to read, we use the original dataframe,
+and just select the rows we used to train on.</p>
+</div>
+</div>
+</div>
+<div id="exercise-tuning-the-max_depth-hyperparameter" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
@@ -654,7 +688,7 @@ to see if you can improve our model predictions.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <!-- We can reduce the over-fitting of our decision tree model by limiting its depth, forcing it to use less decisions to produce a classification, and resulting in a simpler decision space. -->
 <div class="codewrapper sourceCode" id="cb9">
@@ -710,7 +744,7 @@ tell you about the tree trained on <code>max_depth=5</code>?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb10">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -722,7 +756,7 @@ tell you about the tree trained on <code>max_depth=5</code>?</p>
 <span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>plot_tree(clf, class_names<span class="op">=</span>class_names, feature_names<span class="op">=</span>feature_names, filled<span class="op">=</span><span class="va">True</span>, ax<span class="op">=</span>fig.gca())</span>
 <span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>plt.show()</span></code></pre>
 </div>
-<figure><img src="fig/e3_dt_6.png" alt="Simplified decision tree" class="figure mx-auto d-block"></figure><p>It looks like our decision tree has split up the training data into
+<figure><img src="fig/e3_dt_5.png" alt="Simplified decision tree" class="figure mx-auto d-block"></figure><p>It looks like our decision tree has split up the training data into
 the correct penguin categories and more accurately than the
 <code>max_depth=2</code> model did, however it used some very specific
 questions to split up the penguins into the correct categories.</p>
@@ -742,7 +776,7 @@ understanding:</p>
 <span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a>sns.scatterplot(X_train, x<span class="op">=</span>f1, y<span class="op">=</span>f2, hue<span class="op">=</span>y_train, palette<span class="op">=</span><span class="st">'husl'</span>)</span>
 <span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a>plt.show()</span></code></pre>
 </div>
-<figure><img src="fig/e3_dt_space_6.png" alt="Classification space of the simplified decision tree" class="figure mx-auto d-block"></figure><p>Earlier we saw that the <code>max_depth=2</code> model split the data
+<figure><img src="fig/e3_dt_space_5.png" alt="Classification space of the simplified decision tree" class="figure mx-auto d-block"></figure><p>Earlier we saw that the <code>max_depth=2</code> model split the data
 into 3 simple bounding boxes, whereas for <code>max_depth=5</code> we
 see the model has created some very specific classification boundaries
 to correctly classify every point in the training data.</p>
@@ -1115,7 +1149,7 @@ a higher dimensional space.</li>
   "url": "https://carpentries-incubator.github.io/machine-learning-novice-sklearn/03-classification.html",
   "identifier": "https://carpentries-incubator.github.io/machine-learning-novice-sklearn/03-classification.html",
   "dateCreated": "2019-04-04",
-  "dateModified": "2026-03-16",
+  "dateModified": "2026-03-17",
   "datePublished": "2026-03-17"
 }
 
