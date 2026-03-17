@@ -688,7 +688,7 @@ computers show human-like intelligence.</li>
 </div>
 </section></section><section id="aio-02-regression"><p>Content from <a href="02-regression.html">Supervised methods - Regression</a></p>
 <hr>
-<p>Last updated on 2026-03-16 |
+<p>Last updated on 2026-03-17 |
 
         <a href="https://github.com/carpentries-incubator/machine-learning-novice-sklearn/edit/main/episodes/02-regression.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -726,6 +726,22 @@ Scikit-Learn.</li>
 </ul>
 </div>
 </div>
+</div>
+</div>
+</div>
+<div id="getting-started" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="getting-started" class="callout-inner">
+<h3 class="callout-title">Getting Started</h3>
+<div class="callout-content">
+<p>If you are using Jupyter Notebooks, the best way to work is to create
+a new notebook for each episode.</p>
+<p>If you aren’t using Notebooks, you can either create a new
+<code>.py</code> file for each episode and run it from the terminal, or
+write your commands in the Python interpreter.</p>
 </div>
 </div>
 </div>
@@ -849,7 +865,8 @@ feature(s), <code>m</code> represents the gradient of the linear fit,
 and <code>c</code> represents the intercept with the y-axis.</p>
 <p>A typical ML workflow is as following:</p>
 <ul>
-<li>Decide on a model to use model (also known as an estimator)</li>
+<li>Decide on a model that you think will be a good representation of
+your data (otherwise known as an estimator)</li>
 <li>Tweak your data into the required format for your model</li>
 <li>Define and train your model on the input data</li>
 <li>Predict some values using the trained model</li>
@@ -1107,6 +1124,11 @@ and improve fitting</h3>
 <p>Adjust the <code>degree=3</code> input variable for the
 <code>PolynomialFeatures</code> function to change the degree of
 polynomial fit. Can you improve the RMSE of your model?</p>
+<p><strong>Hints:</strong> * You can set the colour of the markers with
+the <code>color=lightgrey</code> argument to aid in readability. * You
+can use <a href="https://fstring.help/cheat/" class="external-link">f-strings</a> to include
+variables in strings, and easily change the number of decimal places
+displayed, e.g. <code>f"error = {my_variable:.2f}"</code>.</p>
 </div>
 </div>
 </div>
@@ -1115,7 +1137,7 @@ polynomial fit. Can you improve the RMSE of your model?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>Let’s plot all the fitted polynomials of degree one to nine,
 alongside the data as before. We can also calculate the root mean
@@ -1124,39 +1146,39 @@ squared error of each polynomial fit and print the best.</p>
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="co">#plot the data</span></span>
-<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>plt.scatter(x_data, y_data, label<span class="op">=</span><span class="st">"all data"</span>)</span>
-<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>plt.scatter(x_data_subset, y_data_subset, label<span class="op">=</span><span class="st">"subset data"</span>)</span>
-<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a></span>
-<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a><span class="co">#name a variable 'best' to store the best RMSE we find.</span></span>
-<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a>best <span class="op">=</span> np.inf</span>
-<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a></span>
-<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a><span class="co">#loop through and plotpolynomials of degree one to nine, </span></span>
-<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a><span class="co">#reusing the earlier code.</span></span>
-<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a><span class="cf">for</span> degree <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>,<span class="dv">10</span>):</span>
-<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a>    poly_features <span class="op">=</span> PolynomialFeatures(degree<span class="op">=</span>degree)</span>
-<span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a>    x_poly <span class="op">=</span> poly_features.fit_transform(x_data_subset)</span>
-<span id="cb14-13"><a href="#cb14-13" tabindex="-1"></a>    <span class="co"># Define our estimator/model(s) and train our model</span></span>
-<span id="cb14-14"><a href="#cb14-14" tabindex="-1"></a>    poly_regress <span class="op">=</span> LinearRegression()</span>
-<span id="cb14-15"><a href="#cb14-15" tabindex="-1"></a>    poly_regress.fit(x_poly,y_data_subset)</span>
-<span id="cb14-16"><a href="#cb14-16" tabindex="-1"></a>    <span class="co"># make predictions using all data, pre-process data too</span></span>
-<span id="cb14-17"><a href="#cb14-17" tabindex="-1"></a>    x_poly_all <span class="op">=</span> poly_features.fit_transform(x_data)</span>
-<span id="cb14-18"><a href="#cb14-18" tabindex="-1"></a>    poly_data <span class="op">=</span> poly_regress.predict(x_poly_all)</span>
-<span id="cb14-19"><a href="#cb14-19" tabindex="-1"></a>    </span>
-<span id="cb14-20"><a href="#cb14-20" tabindex="-1"></a>    poly_error <span class="op">=</span> root_mean_squared_error(y_data, poly_data)</span>
-<span id="cb14-21"><a href="#cb14-21" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"degree="</span>,degree,<span class="st">"; poly error="</span>, poly_error)</span>
-<span id="cb14-22"><a href="#cb14-22" tabindex="-1"></a></span>
-<span id="cb14-23"><a href="#cb14-23" tabindex="-1"></a>    <span class="co">#find best degree polynomial</span></span>
-<span id="cb14-24"><a href="#cb14-24" tabindex="-1"></a>    <span class="cf">if</span> poly_error <span class="op">&lt;</span> best:</span>
-<span id="cb14-25"><a href="#cb14-25" tabindex="-1"></a>        best <span class="op">=</span> poly_error</span>
-<span id="cb14-26"><a href="#cb14-26" tabindex="-1"></a>        <span class="co">#create a variable called degree to store the best polynomial degree.</span></span>
-<span id="cb14-27"><a href="#cb14-27" tabindex="-1"></a>        best_degree <span class="op">=</span> degree</span>
-<span id="cb14-28"><a href="#cb14-28" tabindex="-1"></a>    plt.plot(x_data, poly_data, <span class="st">"-"</span>, label<span class="op">=</span><span class="st">"poly fit, degree="</span><span class="op">+</span><span class="bu">str</span>(degree))</span>
-<span id="cb14-29"><a href="#cb14-29" tabindex="-1"></a></span>
-<span id="cb14-30"><a href="#cb14-30" tabindex="-1"></a><span class="co">#print our best degree polynomial</span></span>
-<span id="cb14-31"><a href="#cb14-31" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Best degree was"</span>,best_degree,<span class="st">"with poly error="</span>,best)</span>
-<span id="cb14-32"><a href="#cb14-32" tabindex="-1"></a>plt.xlabel(<span class="st">"mass g"</span>)</span>
-<span id="cb14-33"><a href="#cb14-33" tabindex="-1"></a>plt.ylabel(<span class="st">"depth mm"</span>)</span>
-<span id="cb14-34"><a href="#cb14-34" tabindex="-1"></a>plt.legend(ncol<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>plt.scatter(x_data, y_data, color<span class="op">=</span><span class="st">'lightgrey'</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a><span class="co">#name a variable 'best' to store the best RMSE we find.</span></span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>best <span class="op">=</span> np.inf</span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a><span class="co">#loop through and plotpolynomials of degree one to nine, </span></span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a><span class="co">#reusing the earlier code.</span></span>
+<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a><span class="cf">for</span> degree <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>,<span class="dv">10</span>):</span>
+<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a>    poly_features <span class="op">=</span> PolynomialFeatures(degree<span class="op">=</span>degree)</span>
+<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a>    x_poly <span class="op">=</span> poly_features.fit_transform(x_data_subset)</span>
+<span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a>    <span class="co"># Define our estimator/model(s) and train our model</span></span>
+<span id="cb14-13"><a href="#cb14-13" tabindex="-1"></a>    poly_regress <span class="op">=</span> LinearRegression()</span>
+<span id="cb14-14"><a href="#cb14-14" tabindex="-1"></a>    poly_regress.fit(x_poly,y_data_subset)</span>
+<span id="cb14-15"><a href="#cb14-15" tabindex="-1"></a>    <span class="co"># make predictions using all data, pre-process data too</span></span>
+<span id="cb14-16"><a href="#cb14-16" tabindex="-1"></a>    x_poly_all <span class="op">=</span> poly_features.fit_transform(x_data)</span>
+<span id="cb14-17"><a href="#cb14-17" tabindex="-1"></a>    poly_data <span class="op">=</span> poly_regress.predict(x_poly_all)</span>
+<span id="cb14-18"><a href="#cb14-18" tabindex="-1"></a>    </span>
+<span id="cb14-19"><a href="#cb14-19" tabindex="-1"></a>    poly_error <span class="op">=</span> root_mean_squared_error(y_data, poly_data)</span>
+<span id="cb14-20"><a href="#cb14-20" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"degree=</span><span class="sc">{</span>degree<span class="sc">}</span><span class="ss">, error=</span><span class="sc">{</span>poly_error<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb14-21"><a href="#cb14-21" tabindex="-1"></a></span>
+<span id="cb14-22"><a href="#cb14-22" tabindex="-1"></a>    <span class="co">#find best degree polynomial</span></span>
+<span id="cb14-23"><a href="#cb14-23" tabindex="-1"></a>    <span class="cf">if</span> poly_error <span class="op">&lt;</span> best:</span>
+<span id="cb14-24"><a href="#cb14-24" tabindex="-1"></a>        best <span class="op">=</span> poly_error</span>
+<span id="cb14-25"><a href="#cb14-25" tabindex="-1"></a>        <span class="co">#create a variable called degree to store the best polynomial degree.</span></span>
+<span id="cb14-26"><a href="#cb14-26" tabindex="-1"></a>        best_degree <span class="op">=</span> degree</span>
+<span id="cb14-27"><a href="#cb14-27" tabindex="-1"></a>    plt.plot(x_data, poly_data, <span class="st">"-"</span>, label<span class="op">=</span><span class="ss">f"degree=</span><span class="sc">{</span>degree<span class="sc">}</span><span class="ss">, error=</span><span class="sc">{</span>poly_error<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb14-28"><a href="#cb14-28" tabindex="-1"></a></span>
+<span id="cb14-29"><a href="#cb14-29" tabindex="-1"></a><span class="co">#print our best degree polynomial</span></span>
+<span id="cb14-30"><a href="#cb14-30" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Best degree was </span><span class="sc">{</span>best_degree<span class="sc">}</span><span class="ss">, with poly error=</span><span class="sc">{</span>best<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb14-31"><a href="#cb14-31" tabindex="-1"></a>plt.title(<span class="st">"Varying polynomial degree fits"</span>)</span>
+<span id="cb14-32"><a href="#cb14-32" tabindex="-1"></a>plt.xlabel(<span class="st">"mass (g)"</span>)</span>
+<span id="cb14-33"><a href="#cb14-33" tabindex="-1"></a>plt.ylabel(<span class="st">"depth (mm)"</span>)</span>
+<span id="cb14-34"><a href="#cb14-34" tabindex="-1"></a>plt.legend(ncol<span class="op">=</span><span class="dv">2</span>)</span>
 <span id="cb14-35"><a href="#cb14-35" tabindex="-1"></a>plt.show()</span></code></pre>
 </div>
 <figure><img src="fig/polynomial_comparison.png" alt="Comparison of several polynomial fits to the data." class="figure mx-auto d-block"></figure>
@@ -1175,7 +1197,7 @@ to create a spline model</h3>
 <div class="callout-content">
 <p>The SplineTransformer is another pre-processing function that behaves
 in a similar way to the PolynomialFeatures function. Import the package
-<code>sklearn.preprocessing.SplinTransformer</code> and adjust your
+<code>sklearn.preprocessing.SplineTransformer</code> and adjust your
 previous code to use the SplineTransformer. Can you improve the RMSE of
 your model by varying the <code>knots</code> and <code>degree</code>
 functions? Is the spline model better than the polynomial model?</p>
@@ -1187,7 +1209,7 @@ functions? Is the spline model better than the polynomial model?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb15">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1195,49 +1217,77 @@ functions? Is the spline model better than the polynomial model?</p>
 <pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> SplineTransformer</span>
 <span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a></span>
 <span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a><span class="co">#plot the data</span></span>
-<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a>plt.scatter(x_data, y_data, label<span class="op">=</span><span class="st">"all data"</span>)</span>
-<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a>plt.scatter(x_data_subset, y_data_subset, label<span class="op">=</span><span class="st">"subset data"</span>)</span>
-<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a></span>
-<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a><span class="co">#name a variable 'best' to store the best RMSE we find.</span></span>
-<span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a>best <span class="op">=</span> np.inf</span>
-<span id="cb15-9"><a href="#cb15-9" tabindex="-1"></a></span>
-<span id="cb15-10"><a href="#cb15-10" tabindex="-1"></a><span class="co">#loop through and plotpolynomials of degree one to nine, </span></span>
-<span id="cb15-11"><a href="#cb15-11" tabindex="-1"></a><span class="co">#reusing the earlier code.</span></span>
-<span id="cb15-12"><a href="#cb15-12" tabindex="-1"></a><span class="cf">for</span> knot <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span>,<span class="dv">5</span>):</span>
-<span id="cb15-13"><a href="#cb15-13" tabindex="-1"></a>    <span class="cf">for</span> degree <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>,<span class="dv">10</span>):</span>
-<span id="cb15-14"><a href="#cb15-14" tabindex="-1"></a>        spline_features <span class="op">=</span>  SplineTransformer(n_knots<span class="op">=</span>knot, degree<span class="op">=</span>degree)</span>
-<span id="cb15-15"><a href="#cb15-15" tabindex="-1"></a>        x_spline <span class="op">=</span> spline_features.fit_transform(x_data_subset)</span>
-<span id="cb15-16"><a href="#cb15-16" tabindex="-1"></a>        <span class="co"># Define our estimator/model(s) and train our model</span></span>
-<span id="cb15-17"><a href="#cb15-17" tabindex="-1"></a>        spline_regress <span class="op">=</span> LinearRegression()</span>
-<span id="cb15-18"><a href="#cb15-18" tabindex="-1"></a>        spline_regress.fit(x_spline,y_data_subset)</span>
-<span id="cb15-19"><a href="#cb15-19" tabindex="-1"></a>        <span class="co"># make predictions using all data, pre-process data too</span></span>
-<span id="cb15-20"><a href="#cb15-20" tabindex="-1"></a>        x_spline_all <span class="op">=</span> spline_features.fit_transform(x_data)</span>
-<span id="cb15-21"><a href="#cb15-21" tabindex="-1"></a>        spline_data <span class="op">=</span> spline_regress.predict(x_spline_all)</span>
-<span id="cb15-22"><a href="#cb15-22" tabindex="-1"></a>        </span>
-<span id="cb15-23"><a href="#cb15-23" tabindex="-1"></a>        spline_error <span class="op">=</span> root_mean_squared_error(y_data, spline_data)</span>
-<span id="cb15-24"><a href="#cb15-24" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"degree="</span>,degree,<span class="st">"; slpine error="</span>, spline_error)</span>
-<span id="cb15-25"><a href="#cb15-25" tabindex="-1"></a>    </span>
-<span id="cb15-26"><a href="#cb15-26" tabindex="-1"></a>        <span class="co">#find best degree polynomial</span></span>
-<span id="cb15-27"><a href="#cb15-27" tabindex="-1"></a>        <span class="cf">if</span> spline_error <span class="op">&lt;</span> best:</span>
-<span id="cb15-28"><a href="#cb15-28" tabindex="-1"></a>            best <span class="op">=</span> spline_error</span>
-<span id="cb15-29"><a href="#cb15-29" tabindex="-1"></a>            <span class="co">#create a variable called degree to store the best polynomial degree.</span></span>
-<span id="cb15-30"><a href="#cb15-30" tabindex="-1"></a>            best_degree <span class="op">=</span> degree</span>
-<span id="cb15-31"><a href="#cb15-31" tabindex="-1"></a>            best_knot <span class="op">=</span> knot</span>
-<span id="cb15-32"><a href="#cb15-32" tabindex="-1"></a>        plt.plot(x_data, spline_data, <span class="st">"-"</span>, label<span class="op">=</span><span class="st">"spline fit, degree="</span><span class="op">+</span><span class="bu">str</span>(degree)<span class="op">+</span><span class="st">" knot="</span><span class="op">+</span><span class="bu">str</span>(knot))</span>
-<span id="cb15-33"><a href="#cb15-33" tabindex="-1"></a></span>
-<span id="cb15-34"><a href="#cb15-34" tabindex="-1"></a><span class="co">#print our best degree polynomial</span></span>
-<span id="cb15-35"><a href="#cb15-35" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Best degree/knot was"</span>,best_degree,best_knot,<span class="st">"with poly error="</span>,best)</span>
-<span id="cb15-36"><a href="#cb15-36" tabindex="-1"></a>plt.xlabel(<span class="st">"mass g"</span>)</span>
-<span id="cb15-37"><a href="#cb15-37" tabindex="-1"></a>plt.ylabel(<span class="st">"depth mm"</span>)</span>
-<span id="cb15-38"><a href="#cb15-38" tabindex="-1"></a>plt.legend(ncol<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a>plt.scatter(x_data, y_data, color<span class="op">=</span><span class="st">'lightgrey'</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a><span class="co">#name a variable 'best' to store the best RMSE we find.</span></span>
+<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a>best <span class="op">=</span> np.inf</span>
+<span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a></span>
+<span id="cb15-9"><a href="#cb15-9" tabindex="-1"></a><span class="co">#loop through and plotpolynomials of degree one to nine, </span></span>
+<span id="cb15-10"><a href="#cb15-10" tabindex="-1"></a><span class="co">#reusing the earlier code.</span></span>
+<span id="cb15-11"><a href="#cb15-11" tabindex="-1"></a><span class="cf">for</span> knot <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span>,<span class="dv">5</span>):</span>
+<span id="cb15-12"><a href="#cb15-12" tabindex="-1"></a>    <span class="cf">for</span> degree <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>,<span class="dv">10</span>):</span>
+<span id="cb15-13"><a href="#cb15-13" tabindex="-1"></a>        spline_features <span class="op">=</span>  SplineTransformer(n_knots<span class="op">=</span>knot, degree<span class="op">=</span>degree)</span>
+<span id="cb15-14"><a href="#cb15-14" tabindex="-1"></a>        x_spline <span class="op">=</span> spline_features.fit_transform(x_data_subset)</span>
+<span id="cb15-15"><a href="#cb15-15" tabindex="-1"></a>        <span class="co"># Define our estimator/model(s) and train our model</span></span>
+<span id="cb15-16"><a href="#cb15-16" tabindex="-1"></a>        spline_regress <span class="op">=</span> LinearRegression()</span>
+<span id="cb15-17"><a href="#cb15-17" tabindex="-1"></a>        spline_regress.fit(x_spline,y_data_subset)</span>
+<span id="cb15-18"><a href="#cb15-18" tabindex="-1"></a>        <span class="co"># make predictions using all data, pre-process data too</span></span>
+<span id="cb15-19"><a href="#cb15-19" tabindex="-1"></a>        x_spline_all <span class="op">=</span> spline_features.fit_transform(x_data)</span>
+<span id="cb15-20"><a href="#cb15-20" tabindex="-1"></a>        spline_data <span class="op">=</span> spline_regress.predict(x_spline_all)</span>
+<span id="cb15-21"><a href="#cb15-21" tabindex="-1"></a>        </span>
+<span id="cb15-22"><a href="#cb15-22" tabindex="-1"></a>        spline_error <span class="op">=</span> root_mean_squared_error(y_data, spline_data)</span>
+<span id="cb15-23"><a href="#cb15-23" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"degree=</span><span class="sc">{</span>degree<span class="sc">}</span><span class="ss">, knot=</span><span class="sc">{</span>knot<span class="sc">}</span><span class="ss">, error=</span><span class="sc">{</span>spline_error<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb15-24"><a href="#cb15-24" tabindex="-1"></a>    </span>
+<span id="cb15-25"><a href="#cb15-25" tabindex="-1"></a>        <span class="co">#find best degree polynomial</span></span>
+<span id="cb15-26"><a href="#cb15-26" tabindex="-1"></a>        <span class="cf">if</span> spline_error <span class="op">&lt;</span> best:</span>
+<span id="cb15-27"><a href="#cb15-27" tabindex="-1"></a>            best <span class="op">=</span> spline_error</span>
+<span id="cb15-28"><a href="#cb15-28" tabindex="-1"></a>            <span class="co">#create a variable called degree to store the best polynomial degree.</span></span>
+<span id="cb15-29"><a href="#cb15-29" tabindex="-1"></a>            best_degree <span class="op">=</span> degree</span>
+<span id="cb15-30"><a href="#cb15-30" tabindex="-1"></a>            best_knot <span class="op">=</span> knot</span>
+<span id="cb15-31"><a href="#cb15-31" tabindex="-1"></a>        plt.plot(x_data, spline_data, <span class="st">"-"</span>, label<span class="op">=</span><span class="ss">f"deg=</span><span class="sc">{</span>degree<span class="sc">}</span><span class="ss">, knot=</span><span class="sc">{</span>knot<span class="sc">}</span><span class="ss">, err=</span><span class="sc">{</span>spline_error<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb15-32"><a href="#cb15-32" tabindex="-1"></a></span>
+<span id="cb15-33"><a href="#cb15-33" tabindex="-1"></a><span class="co">#print our best degree polynomial</span></span>
+<span id="cb15-34"><a href="#cb15-34" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Best degree/knot was </span><span class="sc">{</span>best_degree<span class="sc">}</span><span class="ss">, </span><span class="sc">{</span>best_knot<span class="sc">}</span><span class="ss">, with poly error=</span><span class="sc">{</span>best<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb15-35"><a href="#cb15-35" tabindex="-1"></a>plt.title(<span class="st">"Varying spline fits"</span>)</span>
+<span id="cb15-36"><a href="#cb15-36" tabindex="-1"></a>plt.xlabel(<span class="st">"mass (g)"</span>)</span>
+<span id="cb15-37"><a href="#cb15-37" tabindex="-1"></a>plt.ylabel(<span class="st">"depth (mm)"</span>)</span>
+<span id="cb15-38"><a href="#cb15-38" tabindex="-1"></a>plt.legend(ncol<span class="op">=</span><span class="dv">2</span>)</span>
 <span id="cb15-39"><a href="#cb15-39" tabindex="-1"></a>plt.show()</span></code></pre>
 </div>
 <p>The above line replaces the <code>PolynomialFeatures</code> function.
 It takes in an additional argument <code>knots</code> compared to
-<code>PolynomialFeatures</code>. It’s best performance is comparable to
+<code>PolynomialFeatures</code>. The best performance is comparable to
 that of the <code>PolynomialFeatures</code> in this example (error of
-1.613 fo SplineTransformer and 1.604 for PolynomialFeatures).</p>
+1.613 for <code>SplineTransformer</code> and 1.604 for
+<code>PolynomialFeatures</code>).</p>
+<p>If we reduce the degrees and knots (e.g. knots from 2-4 and degrees
+from 1-4), we can clearly see that <code>knots=2</code> gives the same
+result as the polynomial model. The spline model splits the range up
+into seperate polynomials between a number of knots. More advanced
+spline fitters will try to ensure that the derivatives of the
+polynomials match at the knots.</p>
+<figure><img src="fig/spline_comparison.png" alt="Comparison of several spline fits to the data." class="figure mx-auto d-block"></figure>
 </div>
+</div>
+</div>
+</div>
+<div id="a-note-on-notebooks" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="a-note-on-notebooks" class="callout-inner">
+<h3 class="callout-title">A Note on Notebooks</h3>
+<div class="callout-content">
+<p>If you used a Jupyter Notebook, you might have noticed how convenient
+it is. However, it is important to not <em>just</em> use Notebooks for
+your work. Notebooks are best used for prototyping and exploration. When
+you have developed functions you will reuse, those should be moved into
+<code>.py</code> files, and imported into newer notebooks.</p>
+<p>You also need to make sure you re-run a notebook from the start every
+now and then. As you can run cells out of order, it is possible to
+change an early line and forget to re-run later analysis, so your
+results end up inconsistent.</p>
 </div>
 </div>
 </div>
@@ -1599,7 +1649,7 @@ to see if you can improve our model predictions.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <!-- We can reduce the over-fitting of our decision tree model by limiting its depth, forcing it to use less decisions to produce a classification, and resulting in a simpler decision space. -->
 <div class="codewrapper sourceCode" id="cb9">
@@ -1655,7 +1705,7 @@ tell you about the tree trained on <code>max_depth=5</code>?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb10">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2973,7 +3023,7 @@ might you use to select the best one?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p>The silouette score, unfortunately, incorrectly identifies N=2 as the
 most approprirate clustering configuration in this case (silhouette =
@@ -3032,7 +3082,7 @@ any strange behaviour?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p>Increasing n_samples to 4000 and cluster_std to 3.0 looks like this:
 <img src="fig/kmeans_overlapping_clusters.png" alt="Kmeans attempting to classify overlapping clusters" class="figure"> The straight
@@ -3154,7 +3204,7 @@ real)?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
 <div class="accordion-body">
 <p>KMeans version: runtime around 4 seconds (your computer might be
 faster/slower)</p>
