@@ -22,6 +22,15 @@ exercises: 30
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
+:::::callout
+### Getting Started
+
+If you are using Jupyter Notebooks, the best way to work is to create a new notebook for each episode.
+
+If you aren't using Notebooks, you can either create a new `.py` file for each episode and run it from the terminal, 
+or write your commands in the Python interpreter.
+::::::::::::
+
 ## Supervised learning
 
 Classical machine learning is often divided into two categories – supervised and unsupervised learning.
@@ -55,18 +64,9 @@ We're going to be using the penguins dataset of Allison Horst, published [here](
 The physical attributes measured are flipper length, beak length, beak width, body mass, and sex.
 ![](fig/culmen_depth.png){alt='Artwork by @allison\_horst'}
 
-In other words, the dataset contains 344 rows with 7 features i.e. 5 physical attributes, species and the island where the observations were made.
+In other words, the dataset contains 344 rows with 7 features, i.e. 5 physical attributes, species and the island where the observations were made.
 
-The penguin dataset is available through the Python plotting library [Seaborn](https://seaborn.pydata.org/).
-
-```python
-import seaborn as sns
-
-dataset = sns.load_dataset('penguins')
-dataset.head()
-```
-
-Let's start by loading in and examining the penguin dataset, which containing a few hundred samples and a number of features and labels.
+The penguin dataset is available through the Python plotting library [Seaborn](https://seaborn.pydata.org/). Let's start by loading in and examining this dataset, which contains a few hundred samples and a number of features and labels.
 
 ```python
 import seaborn as sns
@@ -104,13 +104,13 @@ plt.show()
 
 In this regression example we will create a Linear Regression model that will try to predict `y` values based upon `x` values.
 
-In machine learning terminology: we will use our `x` feature (variable) and `y` labels("answers") to train our Linear Regression model to predict `y` values when provided with `x` values.
+In machine learning terminology: we will use our `x` feature (variable) and `y` labels ("answers") to train our Linear Regression model to predict `y` values when provided with `x` values.
 
 The mathematical equation for a linear fit is `y = mx + c` where `y` is our label data, `x` is our input feature(s), `m` represents the gradient of the linear fit, and `c` represents the intercept with the y-axis.
 
 A typical ML workflow is as following:
 
-- Decide on a model to use model (also known as an estimator)
+- Decide on a model that you think will be a good representation of your data (otherwise known as an estimator)
 - Tweak your data into the required format for your model
 - Define and train your model on the input data
 - Predict some values using the trained model
@@ -146,15 +146,14 @@ print("linear coefs=",m, c)
 Now we can make predictions using our trained model, and calculate the Root Mean Squared Error (RMSE) of our predictions:
 
 ```python
-import math
-from sklearn.metrics import mean_squared_error
+from sklearn.metrics import root_mean_squared_error
 
 # Predict some values using our trained estimator/model.
 # In this case we predict our input data to evaluate accuracy!
 linear_data = lin_regress.predict(x_data)
 
 # calculated a RMS error as a quality of fit metric
-error = math.sqrt(mean_squared_error(y_data, linear_data))
+error = root_mean_squared_error(y_data, linear_data)
 print("linear error=",error)
 ```
 
@@ -189,7 +188,7 @@ y_data_all = np.array(y_data_all).reshape(-1, 1)
 linear_data_all = lin_regress.predict(x_data_all)
 
 # calculated a RMS error for all data
-error_all = math.sqrt(mean_squared_error(y_data_all, linear_data_all))
+error_all = root_mean_squared_error(y_data_all, linear_data_all)
 print("linear error=",error_all)
 ```
 
@@ -286,7 +285,7 @@ We can now make predictions using our full dataset. As we did for our training d
 x_poly_all = poly_features.fit_transform(x_data)
 poly_data = poly_regress.predict(x_poly_all)
 
-poly_error = math.sqrt(mean_squared_error(y_data, poly_data))
+poly_error = root_mean_squared_error(y_data, poly_data)
 print("poly error=", poly_error)
 ```
 
@@ -309,14 +308,56 @@ plt.show()
 
 ### Exercise: Vary your polynomial degree to try and improve fitting
 
-Adjust the `degree=2` input variable for the `PolynomialFeatures` function to change the degree of polynomial fit. Can you improve the RMSE of your model?
+Adjust the `degree=3` input variable for the `PolynomialFeatures` function to change the degree of polynomial fit. Can you improve the RMSE of your model?
+
+**Hints:** 
+* You can set the colour of the markers with the `color=lightgrey` argument to aid in readability.
+*  You can use [f-strings](https://fstring.help/cheat/) to include variables in strings, and easily change the number of decimal places displayed, e.g. `f"error = {my_variable:.2f}"`.
 
 :::::::::::::::  solution
 
 ### Solution
 
-MAYBE A FIGURE OR TWO. POTENTIALLY SOME CODE TO LOOP OVER POLYNOMIALS.
+Let's plot all the fitted polynomials of degree one to nine, alongside the data as before. We can also calculate the root mean squared error of each polynomial fit and print the best.
 
+```python
+#plot the data
+plt.scatter(x_data, y_data, color='lightgrey')
+
+#name a variable 'best' to store the best RMSE we find.
+best = np.inf
+
+#loop through and plotpolynomials of degree one to nine, 
+#reusing the earlier code.
+for degree in range(1,10):
+    poly_features = PolynomialFeatures(degree=degree)
+    x_poly = poly_features.fit_transform(x_data_subset)
+    # Define our estimator/model(s) and train our model
+    poly_regress = LinearRegression()
+    poly_regress.fit(x_poly,y_data_subset)
+    # make predictions using all data, pre-process data too
+    x_poly_all = poly_features.fit_transform(x_data)
+    poly_data = poly_regress.predict(x_poly_all)
+    
+    poly_error = root_mean_squared_error(y_data, poly_data)
+    print(f"degree={degree}, error={poly_error}")
+
+    #find best degree polynomial
+    if poly_error < best:
+        best = poly_error
+        #create a variable called degree to store the best polynomial degree.
+        best_degree = degree
+    plt.plot(x_data, poly_data, "-", label=f"degree={degree}, error={poly_error:.2f}")
+
+#print our best degree polynomial
+print(f"Best degree was {best_degree}, with poly error={best:.2f}")
+plt.title("Varying polynomial degree fits")
+plt.xlabel("mass (g)")
+plt.ylabel("depth (mm)")
+plt.legend(ncol=2)
+plt.show()
+```
+![](fig/polynomial_comparison.png){alt='Comparison of several polynomial fits to the data.'}
 
 
 :::::::::::::::::::::::::
@@ -327,7 +368,7 @@ MAYBE A FIGURE OR TWO. POTENTIALLY SOME CODE TO LOOP OVER POLYNOMIALS.
 
 ### Exercise: Now try using the SplineTransformer to create a spline model
 
-The SplineTransformer is another pre-processing function that behaves in a similar way to the PolynomialFeatures function. Adjust your
+The SplineTransformer is another pre-processing function that behaves in a similar way to the PolynomialFeatures function. Import the package `sklearn.preprocessing.SplineTransformer` and adjust your
 previous code to use the SplineTransformer. Can you improve the RMSE of your model by varying the `knots` and `degree` functions? Is the spline model better than the polynomial model?
 
 :::::::::::::::  solution
@@ -335,18 +376,74 @@ previous code to use the SplineTransformer. Can you improve the RMSE of your mod
 ### Solution
 
 ```python
-spline_features =  SplineTransformer(n_knots=3, degree=2)
+from sklearn.preprocessing import SplineTransformer
+
+#plot the data
+plt.scatter(x_data, y_data, color='lightgrey')
+
+#name a variable 'best' to store the best RMSE we find.
+best = np.inf
+
+#loop through and plotpolynomials of degree one to nine, 
+#reusing the earlier code.
+for knot in range(2,5):
+    for degree in range(1,10):
+        spline_features =  SplineTransformer(n_knots=knot, degree=degree)
+        x_spline = spline_features.fit_transform(x_data_subset)
+        # Define our estimator/model(s) and train our model
+        spline_regress = LinearRegression()
+        spline_regress.fit(x_spline,y_data_subset)
+        # make predictions using all data, pre-process data too
+        x_spline_all = spline_features.fit_transform(x_data)
+        spline_data = spline_regress.predict(x_spline_all)
+        
+        spline_error = root_mean_squared_error(y_data, spline_data)
+        print(f"degree={degree}, knot={knot}, error={spline_error:.2f}")
+    
+        #find best degree polynomial
+        if spline_error < best:
+            best = spline_error
+            #create a variable called degree to store the best polynomial degree.
+            best_degree = degree
+            best_knot = knot
+        plt.plot(x_data, spline_data, "-", label=f"deg={degree}, knot={knot}, err={spline_error:.2f}")
+
+#print our best degree polynomial
+print(f"Best degree/knot was {best_degree}, {best_knot}, with poly error={best:.2f}")
+plt.title("Varying spline fits")
+plt.xlabel("mass (g)")
+plt.ylabel("depth (mm)")
+plt.legend(ncol=2)
+plt.show()
 ```
 
-The above line replaces the `PolynomialFeatures` function. It takes in an additional argument `knots` compared to `PolynomialFeatures`.
-ADD LINES OR FIGURES TO EXPLORE THIS.
-SOME COMMENT ON FITS AND MODEL COMPARISON.
+The above line replaces the `PolynomialFeatures` function. 
+It takes in an additional argument `knots` compared to `PolynomialFeatures`. 
+The best performance is comparable to that of the `PolynomialFeatures` in this example (error of 1.613 for `SplineTransformer` and 1.604 for `PolynomialFeatures`).
 
+If we reduce the degrees and knots (e.g. knots from 2-4 and degrees from 1-4), we can clearly see that `knots=2` gives the same result as the polynomial model. 
+The spline model splits the range up into seperate polynomials between a number of knots.
+More advanced spline fitters will try to ensure that the derivatives of the polynomials match at the knots.
 
+![](fig/spline_comparison.png){alt='Comparison of several spline fits to the data.'}
 
 :::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+:::::callout
+### A Note on Notebooks
+
+If you used a Jupyter Notebook, you might have noticed how convenient it is. 
+However, it is important to not *just* use Notebooks for your work. 
+Notebooks are best used for prototyping and exploration.
+When you have developed functions you will reuse, those should be moved into `.py` files, and imported into newer notebooks.
+
+You also need to make sure you re-run a notebook from the start every now and then.
+As you can run cells out of order, it is possible to change an early line and forget to re-run later analysis,
+so your results end up inconsistent.
+::::::::::::
 
 
 
