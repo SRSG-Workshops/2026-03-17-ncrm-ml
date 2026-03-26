@@ -471,39 +471,30 @@ series</li>
 </ul></div>
 <div class="section level3">
 <h3 id="which-ensemble-method-is-best">Which ensemble method is best?<a class="anchor" aria-label="anchor" href="#which-ensemble-method-is-best"></a></h3>
-<div class="line-block">
-<strong>Ensemble method</strong> | <strong>What
-it does</strong> | <strong>Best for</strong> | <strong>Avoid if</strong>
-|<br>
- | —————————————————————————————————— | —————————————————————————————— |
-————————————————————————————————- |<br><strong>Stacking</strong> | Combines predictions from different models
-trained on the same dataset using a meta-model. | Leveraging diverse
-models to improve overall performance. | You need simple and fast models
-or lack diverse base learners. |<br><strong>Bagging</strong> | Trains the same model on different subsets of
-the data (via bootstrapping) and averages their results. | Reducing
-variance (e.g., overfitting) and stabilizing predictions in noisy/small
-datasets. | The problem requires reducing bias or the base model is
-already stable (e.g., linear regression). |<br><strong>Boosting</strong> | Sequentially trains models, focusing on
-correcting errors made by previous models. | Capturing complex patterns
-in large datasets and achieving the highest possible accuracy. | The
-dataset is small or noisy, or you lack computational resources. |</div>
-<p>======= | <strong>Ensemble method</strong> | <strong>What it
-does</strong> | <strong>Best for</strong>| <strong>Avoid if</strong>| |
-——————- | —————- | ———– | ————| | <strong>Stacking</strong> | Combines
-predictions from different models trained on the same dataset using a
-meta-model. | Leveraging diverse models to improve overall performance.
-| You need simple and fast models or lack diverse base learners. | |
-<strong>Bagging</strong> | Trains the same model on different subsets of
-the data (via bootstrapping) and averages their results. | Reducing
-variance (e.g., overfitting) and stabilizing predictions in noisy/small
-datasets. | The problem requires reducing bias or the base model is
-already stable (e.g., linear regression). | | <strong>Boosting</strong>
-| Sequentially trains models, focusing on correcting errors made by
-previous models. | Capturing complex patterns in large datasets and
-achieving the highest possible accuracy. | The dataset is small or
-noisy, or you lack computational resources. |
-&gt;&gt;&gt;&gt;&gt;&gt;&gt; main</p>
-</div>
+<table class="table"><colgroup><col width="32%"><col width="27%"><col width="18%"><col width="20%"></colgroup><thead><tr class="header"><th><strong>Ensemble method</strong></th>
+<th><strong>What it does</strong></th>
+<th><strong>Best for</strong></th>
+<th><strong>Avoid if</strong></th>
+</tr></thead><tbody><tr class="odd"><td><strong>Stacking</strong></td>
+<td>Combines predictions from different models trained on the same
+dataset using a meta-model.</td>
+<td>Leveraging diverse models to improve overall performance.</td>
+<td>You need simple and fast models or lack diverse base learners.</td>
+</tr><tr class="even"><td><strong>Bagging</strong></td>
+<td>Trains the same model on different subsets of the data (via
+bootstrapping) and averages their results.</td>
+<td>Reducing variance (e.g., overfitting) and stabilizing predictions in
+noisy/small datasets.</td>
+<td>The problem requires reducing bias or the base model is already
+stable (e.g., linear regression).</td>
+</tr><tr class="odd"><td><strong>Boosting</strong></td>
+<td>Sequentially trains models, focusing on correcting errors made by
+previous models.</td>
+<td>Capturing complex patterns in large datasets and achieving the
+highest possible accuracy.</td>
+<td>The dataset is small or noisy, or you lack computational
+resources.</td>
+</tr></tbody></table></div>
 </section><section><h2 class="section-heading" id="using-bagging-random-forests-for-a-classification-problem">Using Bagging (Random Forests) for a classification problem<a class="anchor" aria-label="anchor" href="#using-bagging-random-forests-for-a-classification-problem"></a></h2>
 <hr class="half-width"><p>In this session we’ll take another look at the penguins data and
 applying one of the most common bagging approaches, random forests, to
