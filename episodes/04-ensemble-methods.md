@@ -87,7 +87,6 @@ Machine learning jargon can often be hard to remember, so here is a quick summar
 
 ### Which ensemble method is best?
 
-<<<<<<< ep04-ensemble
 | **Ensemble method** | **What it does**                                                                                                       | **Best for**                                                                                           | **Avoid if**                                                                                                  |
 |  | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------- |
 | **Stacking** | Combines predictions from different models trained on the same dataset using a meta-model.             | Leveraging diverse models to improve overall performance.                                  | You need simple and fast models or lack diverse base learners.                                    |
